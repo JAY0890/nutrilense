@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="NutriLense – Instantly scan food labels and get AI-powered nutritional analysis. Identify harmful ingredients, allergens, and health benefits at a glance.">
+  <title>NutriLense — AI Food Label Scanner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Animated background blobs -->
+  <div class="bg-blobs" aria-hidden="true">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">🔬</span>
+      <span class="brand-text">Nutri<span class="brand-accent">Lense</span></span>
+    </div>
+    <div class="nav-tagline">AI-Powered Food Label Analysis</div>
+  </nav>
+
+  <main class="main-content">
+    <!-- Hero Section -->
+    <section class="hero" id="hero-section">
+      <h1 class="hero-title">
+        Know What You're <span class="gradient-text">Really Eating</span>
+      </h1>
+      <p class="hero-subtitle">
+        Upload a photo of any food label and our AI will instantly break down every ingredient — 
+        highlighting what's <span class="text-good">beneficial</span>, what's <span class="text-harmful">harmful</span>, 
+        and what you need to <span class="text-warning">watch out for</span>.
+      </p>
+    </section>
+
+    <!-- Upload Section -->
+    <section class="upload-section" id="upload-section">
+      <div class="upload-card" id="upload-card">
+        <div class="upload-zone" id="upload-zone">
+          <div class="upload-icon-wrapper">
+            <svg class="upload-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="12" width="48" height="40" rx="6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+              <circle cx="22" cy="28" r="5" stroke="currentColor" stroke-width="2.5"/>
+              <path d="M8 42L20 30L30 40L40 28L56 42" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M32 4V16M32 4L26 10M32 4L38 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <p class="upload-text">Drag & drop your food label here</p>
+          <p class="upload-divider">or</p>
+          <label for="file-input" class="upload-btn" id="upload-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            Choose from Gallery
+          </label>
+          <input type="file" id="file-input" accept="image/*" hidden>
+          <p class="upload-hint">Supports JPG, PNG, WEBP — Max 10MB</p>
+        </div>
+
+        <!-- Image Preview -->
+        <div class="preview-area hidden" id="preview-area">
+          <div class="preview-image-wrapper">
+            <img id="preview-image" alt="Preview of uploaded food label">
+            <button class="preview-remove" id="preview-remove" title="Remove image">&times;</button>
+          </div>
+          <div class="preview-info">
+            <span class="preview-filename" id="preview-filename"></span>
+            <span class="preview-filesize" id="preview-filesize"></span>
+          </div>
+          <button class="analyze-btn" id="analyze-btn">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/>
+              <path d="m21 21-4.35-4.35"/>
+            </svg>
+            Analyze Label
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Loading State -->
+    <section class="loading-section hidden" id="loading-section">
+      <div class="loading-card">
+        <div class="dna-loader">
+          <div class="dna-strand">
+            <div class="dna-dot"></div>
+            <div class="dna-dot"></div>
+            <div class="dna-dot"></div>
+            <div class="dna-dot"></div>
+            <div class="dna-dot"></div>
+          </div>
+        </div>
+        <p class="loading-text" id="loading-text">Reading your food label...</p>
+        <p class="loading-subtext">Our AI is analyzing ingredients, nutrients, and additives</p>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section hidden" id="results-section">
+      <!-- Product Header -->
+      <div class="result-header" id="result-header">
+        <span class="result-badge">Analysis Complete</span>
+        <h2 class="result-product-name" id="result-product-name"></h2>
+      </div>
+
+      <!-- Summary Card -->
+      <div class="result-card summary-card" id="summary-card">
+        <div class="card-icon">📋</div>
+        <h3 class="card-title">Summary</h3>
+        <p class="summary-text" id="summary-text"></p>
+      </div>
+
+      <!-- Grid of cards -->
+      <div class="results-grid">
+        <!-- Benefits -->
+        <div class="result-card benefits-card" id="benefits-card">
+          <div class="card-header">
+            <div class="card-icon good-icon">✅</div>
+            <h3 class="card-title">Benefits</h3>
+          </div>
+          <ul class="card-list" id="benefits-list"></ul>
+          <div class="card-empty hidden" id="benefits-empty">No notable benefits identified</div>
+        </div>
+
+        <!-- Harms -->
+        <div class="result-card harms-card" id="harms-card">
+          <div class="card-header">
+            <div class="card-icon harm-icon">⚠️</div>
+            <h3 class="card-title">Harms & Concerns</h3>
+          </div>
+          <ul class="card-list" id="harms-list"></ul>
+          <div class="card-empty hidden" id="harms-empty">No harmful ingredients identified</div>
+        </div>
+
+        <!-- Allergens -->
+        <div class="result-card allergens-card" id="allergens-card">
+          <div class="card-header">
+            <div class="card-icon allergen-icon">🛡️</div>
+            <h3 class="card-title">Allergens</h3>
+          </div>
+          <div class="allergen-tags" id="allergen-tags"></div>
+          <div class="card-empty hidden" id="allergens-empty">No allergens detected</div>
+        </div>
+
+        <!-- Ingredients -->
+        <div class="result-card ingredients-card" id="ingredients-card">
+          <div class="card-header">
+            <div class="card-icon ingredients-icon">🧪</div>
+            <h3 class="card-title">Ingredients</h3>
+          </div>
+          <div class="ingredients-wrap" id="ingredients-wrap"></div>
+          <div class="card-empty hidden" id="ingredients-empty">No ingredients found</div>
+        </div>
+      </div>
+
+      <!-- Extracted Text (collapsible) -->
+      <details class="extracted-text-section" id="extracted-text-section">
+        <summary class="extracted-text-toggle">View Raw Extracted Text</summary>
+        <pre class="extracted-text-content" id="extracted-text-content"></pre>
+      </details>
+
+      <!-- Scan Another -->
+      <button class="scan-another-btn" id="scan-another-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="1 4 1 10 7 10"/>
+          <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+        </svg>
+        Scan Another Label
+      </button>
+    </section>
+
+    <!-- Error Section -->
+    <section class="error-section hidden" id="error-section">
+      <div class="error-card">
+        <div class="error-icon">😔</div>
+        <h3 class="error-title" id="error-title">Something went wrong</h3>
+        <p class="error-message" id="error-message"></p>
+        <button class="try-again-btn" id="try-again-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"/>
+            <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+          </svg>
+          Try Again
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Built with ❤️ and AI • NutriLense © 2026</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
