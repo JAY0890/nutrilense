@@ -1,12 +1,20 @@
 import 'dotenv/config'
 import Express from 'express'
 import multer from 'multer'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
 
 import { extractText } from './services/ocr.service.js'
 import { analyzeLabel } from './services/ai.service.js'
 
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
 const app = Express()
 const upload = multer({ storage: multer.memoryStorage() })
+
+// Serve frontend static files
+app.use(Express.static(join(__dirname, '..', 'frontend')))
 
 app.post("/api/sendimage", upload.single('image'), async (req, res) => {
 
@@ -31,4 +39,6 @@ app.post("/api/sendimage", upload.single('image'), async (req, res) => {
   }
 })
 
-app.listen(3000)
+app.listen(3000, () => {
+  console.log('🔬 NutriLense running at http://localhost:3000')
+})
